@@ -4,8 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "prestart": "rimraf dist && tsc -p tsconfig.json && cpy src/config.json dist ",
-    "start": "node ./dist/index.js ",
+    "prestart": "rimraf dist logs && tsc -p tsconfig.json && cpy src/config.json dist ",
+    "start": "npm run forever:start",
+    "stop": "npm run forever:stop",
+    "forever:start": "forever -a start --uid 'r2' -c 'node --use_strict' --spinSleepTime 1 --minUptime 1000 ./dist/index.js ",
+    "forever:stop": "forever stop r2 && forever cleanlogs",
     "test": "jest --maxWorkers=1 --coverage && cat ./coverage/lcov.info | coveralls",
     "testfast": "jest",
     "coverage": "jest --coverage",
